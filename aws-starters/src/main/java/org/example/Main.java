@@ -20,12 +20,7 @@ public class Main {
         S3Service s3Service = new S3Service(s3Client);
         s3Service.createBucket(bucketName);
 
-        /* 2. Upload objects to bucket */
 
-        /* 3. List objects from bucket */
-
-        /* 4. Delete the bucket */
-        s3Service.deleteBucket(bucketName);
 
         /* cleanup pool */
         s3Client.close();
