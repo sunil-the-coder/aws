@@ -2,10 +2,7 @@ package org.example.s3;
 
 import software.amazon.awssdk.core.waiters.WaiterResponse;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.CreateBucketRequest;
-import software.amazon.awssdk.services.s3.model.HeadBucketRequest;
-import software.amazon.awssdk.services.s3.model.HeadBucketResponse;
-import software.amazon.awssdk.services.s3.model.S3Exception;
+import software.amazon.awssdk.services.s3.model.*;
 import software.amazon.awssdk.services.s3.waiters.S3Waiter;
 
 public class S3Service {
@@ -34,9 +31,6 @@ public class S3Service {
             waiterResponse.matched().response().ifPresent(System.out::println);
 
             System.out.println(bucketName + " is created and ready to use.");
-
-            s3Client.close();
-
             return true;
 
         }catch(S3Exception e) {
@@ -44,6 +38,21 @@ public class S3Service {
             System.err.println(e.awsErrorDetails().errorMessage());
             return false;
         }
+    }
 
+    public boolean deleteBucket(String bucketName) {
+
+        DeleteBucketPolicyRequest delReq = DeleteBucketPolicyRequest.builder()
+                .bucket(bucketName)
+                .build();
+
+        try {
+            s3Client.deleteBucketPolicy(delReq);
+            System.out.println(bucketName +" is deleted.");
+            return true;
+        } catch (S3Exception e) {
+            System.err.println(e.awsErrorDetails().errorMessage());
+            return false;
+        }
     }
 }
